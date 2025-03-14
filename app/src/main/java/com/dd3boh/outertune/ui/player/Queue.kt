@@ -11,6 +11,8 @@ package com.dd3boh.outertune.ui.player
 
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -1158,15 +1160,19 @@ fun BoxScope.QueueContent(
                         }
                     }
                 } else if (mqExpand) {
-                    Column(
-                        modifier = Modifier.fillMaxHeight(0.4f)
-                    ) {
-                        queueHeader(Modifier.windowInsetsPadding(InsetsSafeSTE))
-                        queueList(InsetsSafeSE.asPaddingValues())
-                    }
+                    AnimatedVisibility(multiqueueExpand) {
+                        Column {
+                            Column(
+                                modifier = Modifier.fillMaxHeight(0.4f)
+                            ) {
+                                queueHeader(Modifier.windowInsetsPadding(InsetsSafeSTE))
+                                queueList(InsetsSafeSE.asPaddingValues())
+                            }
 
-                    Spacer(Modifier.height(12.dp))
-                    songHeader(Modifier.windowInsetsPadding(InsetsSafeSE)) // song header
+                            Spacer(Modifier.height(12.dp))
+                            songHeader(Modifier.windowInsetsPadding(InsetsSafeSE)) // song header
+                        }
+                    }
                 }
 
                 val songListInsets = if (mqExpand) {
