@@ -404,6 +404,27 @@ fun BottomSheetPlayer(
                     .background(MaterialTheme.colorScheme.primary)
             ) {
                 ResizableIconButton(
+                    icon = R.drawable.radio,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .size(24.dp),
+                    onClick = {
+                        mediaMetadata?.let { playerConnection.playQueue(YouTubeQueue.radio(it), isRadio = true)}
+                    }
+                )
+            }
+
+            Spacer(modifier = Modifier.width(7.dp))
+
+            Box(
+                modifier = Modifier
+                    .offset(y = 5.dp)
+                    .size(36.dp)
+                    .clip(RoundedCornerShape(24.dp))
+                    .background(MaterialTheme.colorScheme.primary)
+            ) {
+                ResizableIconButton(
                     icon = Icons.Rounded.MoreVert,
                     color = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier
