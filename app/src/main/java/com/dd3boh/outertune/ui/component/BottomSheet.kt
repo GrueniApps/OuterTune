@@ -252,13 +252,14 @@ class BottomSheetState(
     val preUpPostDownNestedScrollConnection
         get() = object : NestedScrollConnection {
             var isTopReached = false
+            var isLocked = false
 
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
                 if (isExpanded && available.y < 0) {
                     isTopReached = false
                 }
 
-                return if (isTopReached && available.y < 0 && source == NestedScrollSource.UserInput) {
+                return if (isTopReached && !isLocked && available.y < 0 && source == NestedScrollSource.UserInput) {
                     dispatchRawDelta(available.y)
                     available
                 } else {
@@ -275,7 +276,11 @@ class BottomSheetState(
                     isTopReached = consumed.y == 0f && available.y > 0
                 }
 
-                return if (isTopReached && source == NestedScrollSource.UserInput) {
+                if (!isTopReached){
+                    isLocked=true
+                }
+
+                return if (isTopReached  && !isLocked  && source == NestedScrollSource.UserInput) {
                     dispatchRawDelta(available.y)
                     available
                 } else {
@@ -284,6 +289,9 @@ class BottomSheetState(
             }
 
             override suspend fun onPreFling(available: Velocity): Velocity {
+                if (!isTopReached){
+                    isLocked=true
+                }
                 return if (isTopReached) {
                     val velocity = -available.y
                     performFling(velocity, null)
@@ -295,7 +303,8 @@ class BottomSheetState(
             }
 
             override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
-                isTopReached = false
+                isLocked = false
+                isTopReached=false
                 return Velocity.Zero
             }
         }

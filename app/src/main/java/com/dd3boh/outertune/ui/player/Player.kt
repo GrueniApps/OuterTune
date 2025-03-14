@@ -12,6 +12,8 @@ package com.dd3boh.outertune.ui.player
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.graphics.drawable.BitmapDrawable
+import android.widget.Toast
+import android.os.PowerManager
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -149,6 +151,7 @@ import com.dd3boh.outertune.ui.utils.SnapLayoutInfoProvider
 import com.dd3boh.outertune.utils.makeTimeString
 import com.dd3boh.outertune.utils.rememberEnumPreference
 import com.dd3boh.outertune.utils.rememberPreference
+import de.grueniapps.androidutils.utils.rememberMonkeyClicker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -355,7 +358,10 @@ fun BottomSheetPlayer(
                     modifier = Modifier
                         .align(Alignment.Center)
                         .size(24.dp),
-                    onClick = playerConnection::toggleLike
+                    onClick = {
+                        playerConnection.toggleLike()
+                        haptic.performHapticFeedback(HapticFeedbackType.ToggleOn)
+                    }
                 )
             }
 
@@ -368,6 +374,8 @@ fun BottomSheetPlayer(
                     .clip(RoundedCornerShape(24.dp))
                     .background(MaterialTheme.colorScheme.primary)
             ) {
+                val context = LocalContext.current
+                val monkeyClicker = rememberMonkeyClicker(2000)
                 ResizableIconButton(
                     icon = R.drawable.radio,
                     color = MaterialTheme.colorScheme.onPrimary,
@@ -375,7 +383,13 @@ fun BottomSheetPlayer(
                         .align(Alignment.Center)
                         .size(24.dp),
                     onClick = {
-                        mediaMetadata?.let { playerConnection.playQueue(YouTubeQueue.radio(it), isRadio = true)}
+                        mediaMetadata?.let {
+                            playerConnection.playQueue(YouTubeQueue.radio(it), isRadio = true)
+                            haptic.performHapticFeedback(HapticFeedbackType.ToggleOn)
+                            monkeyClicker.processEvent {
+                                Toast.makeText(context,"Radio started!",Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
                 )
             }
