@@ -1,5 +1,6 @@
 package com.dd3boh.outertune.ui.screens.search
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,8 @@ import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -259,12 +262,14 @@ fun OnlineSearchScreen(
                             }
                         }
                         .animateItem()
+                        .background(MaterialTheme.colorScheme.surfaceContainerHigh)
                 )
             }
 
             if (item !is SongItem) content()
             else {
                 SwipeToQueueBox(
+                    modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainerHigh),
                     item = item.toMediaItem(),
                     content = { content() },
                     snackbarHostState = snackbarHostState

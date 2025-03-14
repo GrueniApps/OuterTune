@@ -134,6 +134,9 @@ import com.dd3boh.outertune.extensions.tabMode
 import com.dd3boh.outertune.extensions.togglePlayPause
 import com.dd3boh.outertune.extensions.toggleRepeatMode
 import com.dd3boh.outertune.models.MediaMetadata
+import com.dd3boh.outertune.playback.isShuffleEnabled
+import com.dd3boh.outertune.playback.PlayerConnection
+import com.dd3boh.outertune.playback.queues.YouTubeQueue
 import com.dd3boh.outertune.ui.component.AsyncImageLocal
 import com.dd3boh.outertune.ui.component.BottomSheet
 import com.dd3boh.outertune.ui.component.BottomSheetState
@@ -366,6 +369,27 @@ fun BottomSheetPlayer(
                     .background(MaterialTheme.colorScheme.primary)
             ) {
                 ResizableIconButton(
+                    icon = R.drawable.radio,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .size(24.dp),
+                    onClick = {
+                        mediaMetadata?.let { playerConnection.playQueue(YouTubeQueue.radio(it), isRadio = true)}
+                    }
+                )
+            }
+
+            Spacer(modifier = Modifier.width(7.dp))
+
+            Box(
+                modifier = Modifier
+                    .offset(y = 5.dp)
+                    .size(36.dp)
+                    .clip(RoundedCornerShape(24.dp))
+                    .background(MaterialTheme.colorScheme.primary)
+            ) {
+                ResizableIconButton(
                     icon = Icons.Rounded.MoreVert,
                     color = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier
@@ -399,7 +423,11 @@ fun BottomSheetPlayer(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = PlayerHorizontalPadding, end = PlayerHorizontalPadding, bottom = 16.dp)
+                        .padding(
+                            start = PlayerHorizontalPadding,
+                            end = PlayerHorizontalPadding,
+                            bottom = 16.dp
+                        )
                 ) {
                     actionButtons()
                 }
@@ -473,7 +501,7 @@ fun BottomSheetPlayer(
                 onValueChange = {
                     sliderPosition = it.toLong()
                     // slider too granular for this haptic to feel right
-//                    haptic.performHapticFeedback(HapticFeedbackType.SegmentFrequentTick)
+                    //haptic.performHapticFeedback(HapticFeedbackType.SegmentFrequentTick)
                 },
                 onValueChangeFinished = {
                     sliderPosition?.let {
@@ -483,13 +511,18 @@ fun BottomSheetPlayer(
                     sliderPosition = null
                     haptic.performHapticFeedback(HapticFeedbackType.Confirm)
                 },
-                thumb = { Spacer(modifier = Modifier.size(0.dp)) },
-                track = { sliderState ->
-                    PlayerSliderTrack(
-                        sliderState = sliderState,
+                //thumb = { Spacer(modifier = Modifier.size(0.dp)) },
+                /*track = { sliderState ->
+                    Slider(
+                        modifier = Modifier.height(28.dp),
+                        state = sliderState,
                         colors = SliderDefaults.colors()
                     )
-                },
+                    /*PlayerSliderTrack(
+                        sliderState = sliderState,
+                        colors = SliderDefaults.colors()
+                    )*/
+                },*/
                 modifier = Modifier.padding(horizontal = PlayerHorizontalPadding)
             )
 
