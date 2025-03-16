@@ -52,6 +52,9 @@ import com.dd3boh.outertune.extensions.toMediaItem
 import com.dd3boh.outertune.extensions.togglePlayPause
 import com.dd3boh.outertune.models.toMediaMetadata
 import com.dd3boh.outertune.playback.queues.ListQueue
+import com.dd3boh.outertune.ui.component.IconButton
+import com.dd3boh.outertune.playback.queues.YouTubeQueue
+import com.dd3boh.outertune.ui.component.LocalMenuState
 import com.dd3boh.outertune.ui.component.button.IconButton
 import com.dd3boh.outertune.ui.component.LazyColumnScrollbar
 import com.dd3boh.outertune.ui.component.SearchBarIconOffsetX
@@ -233,14 +236,17 @@ fun OnlineSearchScreen(
                                         playerConnection.player.togglePlayPause()
                                     } else {
                                         val songSuggestions = viewState.items.filter { it is SongItem }
-                                        playerConnection.playQueue(
-                                            ListQueue(
+                                        item.toMediaMetadata().let {
+                                            playerConnection.playQueue(
+                                                YouTubeQueue.radio(it)
+                                                /*ListQueue(
                                                 title = "${context.getString(R.string.queue_searched_songs_ot)} $query",
                                                 items = songSuggestions.map { (it as SongItem).toMediaMetadata() },
                                                 startIndex = songSuggestions.indexOf(item)
-                                            ),
-                                            replace = true,
-                                        )
+                                            )*/,
+                                                isRadio = true,
+                                            )
+                                        }
                                         onDismiss()
                                     }
                                 }

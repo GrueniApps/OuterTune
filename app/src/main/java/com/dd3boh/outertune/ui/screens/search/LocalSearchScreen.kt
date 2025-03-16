@@ -1,5 +1,6 @@
 package com.dd3boh.outertune.ui.screens.search
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -172,7 +173,7 @@ fun LocalSearchScreen(
                                 isSelected = false,
                                 navController = navController,
                                 snackbarHostState = snackbarHostState,
-                                modifier = Modifier.animateItem()
+                                modifier = Modifier.animateItem().background(MaterialTheme.colorScheme.surfaceContainerHigh)
                             )
                         }
 
