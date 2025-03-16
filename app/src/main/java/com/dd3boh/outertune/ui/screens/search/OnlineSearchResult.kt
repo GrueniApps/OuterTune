@@ -46,6 +46,7 @@ import com.dd3boh.outertune.extensions.toMediaItem
 import com.dd3boh.outertune.extensions.togglePlayPause
 import com.dd3boh.outertune.models.toMediaMetadata
 import com.dd3boh.outertune.playback.queues.ListQueue
+import com.dd3boh.outertune.playback.queues.YouTubeQueue
 import com.dd3boh.outertune.ui.component.ChipsRow
 import com.dd3boh.outertune.ui.component.EmptyPlaceholder
 import com.dd3boh.outertune.ui.component.button.IconButton
@@ -158,31 +159,29 @@ fun OnlineSearchResult(
                             )
                         }
 
-                    },
-                    modifier = Modifier
-                        .combinedClickable(
-                            onClick = {
-                                when (item) {
-                                    is SongItem -> {
-                                        if (item.id == mediaMetadata?.id) {
-                                            playerConnection.player.togglePlayPause()
-                                        } else {
-                                            val songSuggestions = collection.filter { it is SongItem }
+                },
+                modifier = Modifier
+                    .combinedClickable(
+                        onClick = {
+                            when (item) {
+                                is SongItem -> {
+                                    if (item.id == mediaMetadata?.id) {
+                                        playerConnection.player.togglePlayPause()
+                                    } else {
+                                        val songSuggestions = collection.filter { it is SongItem }
+                                        item.toMediaMetadata().let {
                                             playerConnection.playQueue(
-                                                ListQueue(
-                                                    title = "${context.getString(R.string.queue_searched_songs_ot)} ${
-                                                        URLDecoder.decode(
-                                                            viewModel.query,
-                                                            "UTF-8"
-                                                        )
-                                                    }",
-                                                    items = songSuggestions.map { (it as SongItem).toMediaMetadata() },
-                                                    startIndex = songSuggestions.indexOf(item)
-                                                ),
-                                                replace = true,
+                                                YouTubeQueue.radio(it)
+                                                /*ListQueue(
+                                                title = "${context.getString(R.string.queue_searched_songs_ot)} $query",
+                                                items = songSuggestions.map { (it as SongItem).toMediaMetadata() },
+                                                startIndex = songSuggestions.indexOf(item)
+                                            )*/,
+                                                isRadio = true,
                                             )
                                         }
                                     }
+                                }
 
                                     is AlbumItem -> navController.navigate("album/${item.id}")
                                     is ArtistItem -> navController.navigate("artist/${item.id}")
