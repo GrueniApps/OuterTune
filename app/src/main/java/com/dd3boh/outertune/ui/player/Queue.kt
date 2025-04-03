@@ -1162,7 +1162,7 @@ fun BoxScope.QueueContent(
                 } else if (mqExpand) {
                     AnimatedVisibility(multiqueueExpand) {
                         Column {
-                            Column(
+                        Column(
                                 modifier = Modifier.fillMaxHeight(0.4f)
                             ) {
                                 queueHeader(Modifier.windowInsetsPadding(InsetsSafeSTE))
