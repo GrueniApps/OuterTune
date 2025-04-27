@@ -322,6 +322,11 @@ class MainActivity : ComponentActivity() {
         bindService(Intent(this, MusicService::class.java), serviceConnection, BIND_AUTO_CREATE)
     }
 
+    override fun onPause() {
+        super.onPause()
+        playerConnection?.service?.saveQueueToDisk()
+    }
+
     override fun onDestroy() {
         try {
             connectivityObserver.unregister()
@@ -339,7 +344,7 @@ class MainActivity : ComponentActivity() {
          * Regardless of what happens, queues and last position are saves
          */
         unbindService(serviceConnection)
-
+        playerConnection?.service?.saveQueueToDisk()
         if (dataStore.get(StopMusicOnTaskClearKey, false) && isFinishing) {
 //                stopService(Intent(this, MusicService::class.java)) // Believe me, this doesn't actually stop
             playerConnection?.service?.onDestroy()
