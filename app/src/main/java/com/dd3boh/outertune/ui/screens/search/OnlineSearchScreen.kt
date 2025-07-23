@@ -51,8 +51,6 @@ import com.dd3boh.outertune.constants.SuggestionItemHeight
 import com.dd3boh.outertune.extensions.toMediaItem
 import com.dd3boh.outertune.extensions.togglePlayPause
 import com.dd3boh.outertune.models.toMediaMetadata
-import com.dd3boh.outertune.playback.queues.ListQueue
-import com.dd3boh.outertune.ui.component.IconButton
 import com.dd3boh.outertune.playback.queues.YouTubeQueue
 import com.dd3boh.outertune.ui.component.LocalMenuState
 import com.dd3boh.outertune.ui.component.button.IconButton

@@ -1161,7 +1161,7 @@ fun BoxScope.QueueContent(
                         }
                     }
                 } else if (mqExpand) {
-                    AnimatedVisibility(multiqueueExpand) {
+                    AnimatedVisibility(mqExpand) {
                         Column {
                         Column(
                                 modifier = Modifier.fillMaxHeight(0.4f)
